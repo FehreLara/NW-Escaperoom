@@ -1,0 +1,692 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mission Lebensmittelrettung</title>
+<style>
+:root {
+  --green:#28784b;
+  --dark:#19452e;
+  --light:#e8f4eb;
+  --pale:#f6faf6;
+  --white:#fff;
+  --text:#26382d;
+  --border:#d5e5d9;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  background:var(--pale);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+  line-height:1.6;
+}
+header {
+  background:linear-gradient(120deg,#19452e,#38885a);
+  color:white;
+  padding:30px 20px;
+  text-align:center;
+}
+header h1 { margin:5px 0; font-size:2.2rem; }
+header p { margin:0; }
+main { max-width:950px; margin:25px auto; padding:0 16px 40px; }
+.card {
+  background:white;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:24px;
+  margin-bottom:18px;
+  box-shadow:0 5px 18px #19452e0d;
+}
+h2,h3 { color:var(--dark); }
+h2 { margin-top:0; }
+.story {
+  background:var(--light);
+  border-left:5px solid var(--green);
+  padding:15px;
+  border-radius:8px;
+  margin:15px 0;
+}
+button {
+  background:var(--green);
+  color:white;
+  border:0;
+  padding:12px 18px;
+  border-radius:9px;
+  cursor:pointer;
+  font-weight:bold;
+  font-size:1rem;
+  margin:5px 4px 5px 0;
+}
+button:hover { background:var(--dark); }
+button.secondary {
+  background:var(--light);
+  color:var(--dark);
+  border:1px solid var(--border);
+}
+input,select,textarea {
+  width:100%;
+  padding:11px;
+  border:1px solid #b7cdbd;
+  border-radius:8px;
+  font:inherit;
+  margin:5px 0 12px;
+}
+label { display:block; font-weight:bold; margin-top:10px; }
+.hidden { display:none !important; }
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:12px;
+}
+.choice {
+  background:var(--light);
+  color:var(--dark);
+  text-align:left;
+  min-height:110px;
+}
+.choice strong { display:block; font-size:1.1rem; }
+.info {
+  background:#f3f8f4;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:16px;
+  margin:15px 0;
+}
+.info h3 { margin-top:0; }
+.timer {
+  background:var(--light);
+  color:var(--dark);
+  padding:10px 16px;
+  border-radius:9px;
+  font-size:1.2rem;
+  font-weight:bold;
+}
+.topbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:15px;
+}
+.progress {
+  background:#e1ebe4;
+  height:9px;
+  border-radius:20px;
+  overflow:hidden;
+  margin:15px 0;
+}
+.progress span {
+  display:block;
+  height:100%;
+  background:var(--green);
+  width:0;
+}
+.feedback {
+  padding:12px;
+  border-radius:8px;
+  margin:12px 0;
+  display:none;
+}
+.feedback.ok {
+  display:block;
+  background:#e4f5e8;
+  color:#185d35;
+}
+.feedback.no {
+  display:block;
+  background:#fff0ed;
+  color:#963d32;
+}
+.letter {
+  font-size:1.7rem;
+  font-weight:bold;
+  letter-spacing:8px;
+  color:var(--green);
+}
+.station-visual {
+   margin:16px 0;
+   padding:12px;
+   background:#f6faf6;
+   border:1px solid var(--border);
+   border-radius:12px;
+ }
+ .station-visual svg { display:block; width:100%; max-height:220px; }
+ .visual-caption { color:#52675a; font-size:.9rem; text-align:center; margin:6px 0 0; }
+ .station-number {
+  display:inline-block;
+  background:var(--light);
+  color:var(--green);
+  padding:8px 14px;
+  border-radius:10px;
+  font-weight:bold;
+}
+a { color:#176b3d; font-weight:bold; }
+.resource {
+  display:block;
+  margin:8px 0;
+}
+.order-item {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:10px;
+  margin:7px 0;
+}
+.order-item button { padding:5px 10px; }
+table { width:100%; border-collapse:collapse; }
+th,td {
+  text-align:left;
+  padding:10px;
+  border-bottom:1px solid var(--border);
+}
+th { background:var(--light); }
+footer { text-align:center; color:#66776c; padding:20px; }
+@media(max-width:600px) {
+  header h1 { font-size:1.7rem; }
+  .card { padding:17px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Mission Lebensmittelrettung</h1>
+  <p>Ein digitaler Escape Room für Naturwissenschaften (NW), Klasse 9</p>
+</header>
+
+<main>
+
+<!-- STARTBEREICH -->
+
+<section id="start" class="card">
+  <h2>🚨 Alarm in der Schulküche!</h2>
+
+  <div class="story">
+    <strong>Notfallmeldung:</strong>
+    <p>In der Schulküche ist über Nacht ein technischer Defekt aufgetreten. Die digitale Lagerdokumentation ist ausgefallen. Niemand weiß mehr genau, welche Lebensmittel noch verwendet werden können und warum manche Lebensmittel ihr Aussehen, ihren Geruch oder ihre Beschaffenheit verändern.</p>
+    <p>Das Mittagessen für morgen ist in Gefahr!</p>
+    <p>Ihr werdet als Lebensmittelrettungsteam gerufen. In sechs Ermittlungsakten müsst ihr herausfinden, was mit den Lebensmitteln passiert ist. In sechs Ermittlungsakten untersucht ihr, wie Lebensmittel verändert werden, wie man sie richtig lagert und wie man sich vor Krankheitserregern schützt. Wenn ihr alle Akten gelöst habt, wird die Schulküche freigeschaltet und ihr erfahrt, welche Persönlichkeit hinter einem wichtigen Verfahren zur Haltbarmachung von Lebensmitteln steht.</p>
+  </div>
+
+  <h3>Wer startet die Mission?</h3>
+  <div class="grid">
+    <button class="choice" onclick="showTeam()">
+      <strong>👩‍🔬 Schülerteam</strong>
+      Wir wollen die Schulküche retten!
+    </button>
+    <button class="choice" onclick="showTeacherLogin()">
+      <strong>🧑‍🏫 Lehrkraft</strong>
+      Zum geschützten Bereich.
+    </button>
+  </div>
+
+  <div id="teamSetup" class="info hidden">
+    <h3>Team anmelden</h3>
+    <label for="teamName">Wie heißt euer Team?</label>
+    <input id="teamName" maxlength="40" placeholder="Unser Teamname">
+    <p>Der Timer startet erst, wenn ihr die Mission beginnt.</p>
+    <button onclick="startGame()">Mission starten</button>
+    <div id="startError" class="feedback"></div>
+  </div>
+
+  <div id="teacherLogin" class="info hidden">
+    <h3>Lehrkraftbereich</h3>
+    <label for="teacherPassword">Passwort</label>
+    <input id="teacherPassword" type="password" placeholder="Passwort">
+    <button onclick="teacherLogin()">Anmelden</button>
+    <div id="loginError" class="feedback"></div>
+  </div>
+</section>
+
+<!-- SPIELBEREICH -->
+
+<section id="game" class="hidden">
+  <div class="topbar">
+    <div>
+      <strong id="teamDisplay"></strong>
+      <div id="stationDisplay">Ermittlungsakte 1 von 6</div>
+    </div>
+    <div class="timer" id="timer">00:00</div>
+  </div>
+
+  <div class="progress"><span id="progress"></span></div>
+  <div id="stationContent"></div>
+</section>
+
+<!-- ENDE -->
+
+<section id="final" class="card hidden">
+  <h2>🔐 Die Schulküche ist freigeschaltet!</h2>
+  <p>Ihr habt alle sechs Ermittlungsakten erfolgreich gelöst. Die gesuchte Persönlichkeit ist:</p>
+  <div class="info" style="text-align:center;">
+    <div class="letter">PASTEUR</div>
+  </div>
+  <h3>Wer war Louis Pasteur?</h3>
+  <div class="grid" style="grid-template-columns:minmax(150px,220px) 1fr;align-items:start;">
+    <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Louis_Pasteur-portrait.jpg/960px-Louis_Pasteur-portrait.jpg" alt="Historisches Porträt von Louis Pasteur" style="width:100%;max-width:220px;border-radius:10px;border:1px solid var(--border);">
+    <div>
+      <p>Louis Pasteur (1822 bis 1895) war ein französischer Wissenschaftler. Er erforschte Mikroorganismen und zeigte, dass sie zum Beispiel bei Gärungsprozessen eine wichtige Rolle spielen.</p>
+      <p>Für Lebensmittel besonders wichtig ist die nach ihm benannte <strong>Pasteurisierung</strong>. Dabei werden Lebensmittel wie Milch für eine festgelegte Zeit auf eine bestimmte Temperatur erhitzt. So wird die Zahl vieler krankmachender und verderbniserregender Mikroorganismen stark verringert. Die Pasteurisierung macht ein Lebensmittel nicht vollständig keimfrei. Deshalb muss pasteurisierte Milch weiterhin gekühlt gelagert werden.</p>
+      <p><small>Bild: Louis Pasteur, historisches Porträt, gemeinfrei. <a href="https://commons.wikimedia.org/wiki/File:Louis_Pasteur-portrait.jpg" target="_blank" rel="noopener">Bildquelle Wikimedia Commons ↗</a></small></p>
+    </div>
+  </div>
+  <button onclick="finishGame()">Mission abschließen</button>
+</section>
+
+<section id="success" class="card hidden">
+  <h2>🎉 Mission erfolgreich!</h2>
+  <p>Ihr habt das Lösungswort gefunden und die Schulküche gerettet. Das Mittagessen kann vorbereitet werden!</p>
+  <div class="info">
+    <strong>Team:</strong> <span id="doneTeam"></span><br>
+    <strong>Datum:</strong> <span id="doneDate"></span><br>
+    <strong>Benötigte Zeit:</strong> <span id="doneTime"></span>
+  </div>
+  <button onclick="location.reload()">Zur Startseite</button>
+</section>
+
+<!-- LEHRKRAFTBEREICH -->
+
+<section id="teacherArea" class="card hidden">
+  <div class="topbar">
+    <h2>Lehrkraftbereich</h2>
+    <button class="secondary" onclick="logout()">Abmelden</button>
+  </div>
+
+  <p>Hier findest du die gespeicherten Durchläufe mit Teamname, Datum und benötigter Zeit.</p>
+
+  <button onclick="renderRecords()">Liste aktualisieren</button>
+  <button class="secondary" onclick="exportCSV()">CSV exportieren</button>
+  <button class="secondary" onclick="deleteRecords()">Alle Einträge löschen</button>
+
+  <div id="records"></div>
+
+  <div class="info">
+    <strong>Technischer Hinweis:</strong>
+    Die Ergebnisse werden lokal in diesem Browser gespeichert. Wenn mehrere Geräte verwendet werden, werden die Ergebnisse nicht automatisch zusammengeführt. Das Passwort schützt den Bereich vor einfachem Zugriff, ist bei einer lokalen HTML-Datei aber kein sicherer technischer Schutz.
+  </div>
+</section>
+
+</main>
+
+<footer>Mission Lebensmittelrettung · Naturwissenschaften (NW), Klasse 9</footer>
+
+<script>
+const stations = [
+
+{
+ title:"Der Fund im Vorratsraum",
+ subtitle:"Wie verändern Mikroorganismen Lebensmittel?",
+ story:"In der Schulküche wurden mehrere Lebensmittel entdeckt, die sich verändert haben. Die Küchencrew hat vier Beobachtungen notiert. Findet heraus, welche Vorgänge dahinterstecken.",
+ visual:`<div class="station-visual"><svg viewBox="0 0 720 190" role="img" aria-label="Milch, verschimmeltes Brot, Fisch und Fruchtsaft"><rect x="18" y="18" width="154" height="142" rx="16" fill="#e8f4eb"/><path d="M62 48h62l-7 92H69z" fill="#fff" stroke="#28784b" stroke-width="4"/><path d="M62 48l12-18h38l12 18" fill="#cce5d2" stroke="#28784b" stroke-width="4"/><text x="95" y="178" text-anchor="middle" font-size="15" fill="#19452e">Milch</text><rect x="190" y="18" width="154" height="142" rx="16" fill="#f7efe2"/><path d="M220 104q12-53 48-53t48 53v22H220z" fill="#d9a66c" stroke="#9b6b3e" stroke-width="3"/><g fill="#397b4d"><circle cx="246" cy="79" r="10"/><circle cx="270" cy="67" r="8"/><circle cx="293" cy="86" r="12"/></g><text x="267" y="178" text-anchor="middle" font-size="15" fill="#19452e">Schimmelbrot</text><rect x="362" y="18" width="154" height="142" rx="16" fill="#e8f1f7"/><path d="M390 91q60-45 100 0-40 45-100 0z" fill="#8ab4c8" stroke="#356b83" stroke-width="3"/><path d="M390 91l-18-18v36z" fill="#8ab4c8" stroke="#356b83" stroke-width="3"/><circle cx="469" cy="87" r="4" fill="#19452e"/><text x="439" y="178" text-anchor="middle" font-size="15" fill="#19452e">Fisch</text><rect x="534" y="18" width="168" height="142" rx="16" fill="#fff2dc"/><path d="M584 46h68v88h-68z" fill="#f3cf75" stroke="#9b7426" stroke-width="4"/><path d="M580 46h76v-13h-76z" fill="#fff" stroke="#9b7426" stroke-width="3"/><text x="618" y="178" text-anchor="middle" font-size="15" fill="#19452e">Fruchtsaft</text></svg><p class="visual-caption">Beispiele für Veränderungen durch Mikroorganismen</p></div>`,
+  info:`<h3>Wissenskarte: Lebensmittel können sich verändern</h3>
+<p>Lebensmittel enthalten Wasser und Nährstoffe. Diese können Mikroorganismen als Nahrung dienen. Dazu gehören Bakterien sowie die Pilze Hefen und Schimmelpilze. Gelangen sie auf ein Lebensmittel und finden passende Bedingungen, können sie sich vermehren und dessen Bestandteile verändern. Wie schnell das geschieht, hängt unter anderem von Temperatur, Feuchtigkeit, Säuregehalt und Sauerstoff ab.</p>
+<p><strong>Bakterien in Milch:</strong> Bestimmte Milchsäurebakterien nutzen Milchzucker, auch Laktose genannt, als Nahrung. Dabei entsteht Milchsäure. Der pH-Wert sinkt und die Milch schmeckt sauer. Das ist ein Beispiel für eine mikrobielle Veränderung.</p>
+<p><strong>Schimmel auf Brot und Nüssen:</strong> Schimmelpilze wachsen als feine Pilzfäden, die zusammen ein Geflecht bilden. Der sichtbare Belag ist oft nur der Teil, den man an der Oberfläche erkennt. Einige Schimmelpilzarten bilden giftige Stoffe, sogenannte Mykotoxine. Diese können auch dann noch im Lebensmittel vorhanden sein, wenn der sichtbare Schimmel entfernt wurde. Verschimmelte weiche Lebensmittel sollten deshalb nicht einfach an der befallenen Stelle abgeschnitten und weitergegessen werden.</p>
+<p><strong>Bakterien in Fleisch und Fisch:</strong> Bakterien können Eiweiße und andere Bestandteile zersetzen. Dabei entstehen Stoffe, die Geruch, Geschmack und Beschaffenheit verändern. Das Lebensmittel kann beispielsweise faulig riechen oder schmierig werden. Krankheitserreger müssen dabei nicht immer durch Aussehen oder Geruch erkennbar sein.</p>
+<p><strong>Hefen in Fruchtsaft:</strong> Hefen sind einzellige Pilze. Sie können Zucker abbauen. Bei der alkoholischen Gärung entstehen vor allem Alkohol und Kohlenstoffdioxid. Das Gas kann Bläschen oder Druck in einer verschlossenen Flasche verursachen. Ein gärender Saft ist nicht automatisch sicher zum Trinken.</p>
+<p><strong>Nicht jede Veränderung ist biologischer Verderb:</strong> Ein angeschnittener Apfel kann durch eine enzymatische Reaktion mit Sauerstoff braun werden. Dafür müssen keine Mikroorganismen wachsen. Diesen Vorgang untersucht ihr genauer in Ermittlungsakte 5.</p>`,
+ links:[["BZfE: Haltbarkeit von Lebensmitteln","https://www.bzfe.de/kueche-und-alltag/kochen/haltbarkeit-von-lebensmitteln"]],
+ task:`<p><strong>Ermittlungsauftrag:</strong> Lest die vier Fälle und wählt jeweils die passende Erklärung aus.</p>
+ <label>1. Milch wird sauer. Was ist die Ursache?</label>
+ <select id="s1a"><option value="">Antwort auswählen</option><option value="a">Bakterien bauen Milchzucker zu Säure ab.</option><option value="b">Schimmelpilze entziehen der Milch Wasser.</option><option value="c">Hefen wandeln das Milcheiweiß in Zucker um.</option></select>
+ <label>2. Auf Brot oder Nüssen wächst Schimmel. Was kann dabei passieren?</label>
+ <select id="s1b"><option value="">Antwort auswählen</option><option value="a">Schimmelpilze können sich vermehren und teilweise giftige Stoffe bilden.</option><option value="b">Bakterien verwandeln die Stärke vollständig in Fett.</option><option value="c">Sauerstoff färbt die Oberfläche grün, ohne dass Lebewesen beteiligt sind.</option></select>
+ <label>3. Fleisch oder Fisch werden faul. Was geschieht dabei?</label>
+ <select id="s1c"><option value="">Antwort auswählen</option><option value="a">Hefen bauen hauptsächlich den Milchzucker ab.</option><option value="b">Bakterien zersetzen Eiweiße und verändern dadurch das Lebensmittel.</option><option value="c">Sauerstoff verwandelt Eiweiß direkt in Schimmel.</option></select>
+ <label>4. Geöffneter Fruchtsaft beginnt zu gären. Welche Lebewesen können dafür verantwortlich sein?</label>
+ <select id="s1d"><option value="">Antwort auswählen</option><option value="a">Schimmelpilze, die Fruchtzucker ausschließlich in Eiweiß umwandeln.</option><option value="b">Bakterien, die den Saft vollständig in Wasser verwandeln.</option><option value="c">Hefen, die Zucker abbauen und dabei unter anderem Gas und Alkohol bilden.</option></select>
+ <button onclick="checkStation(0)">Fundstücke auswerten</button>`,
+ check:()=>v("s1a")==="a"&&v("s1b")==="a"&&v("s1c")==="b"&&v("s1d")==="c"
+},
+
+{
+ title:"Die unsichtbaren Bewohner",
+ subtitle:"Wer kann Lebensmittel verändern?",
+ story:"Die Kamera im Vorratsraum hat nichts Auffälliges aufgezeichnet. Trotzdem ist das Brot verdorben. Die Küchenleitung vermutet winzige Lebewesen.",
+ visual:`<div class="station-visual"><svg viewBox="0 0 720 190" role="img" aria-label="Schematische Darstellung von Bakterien, Schimmelpilzen und Hefezellen"><rect x="18" y="18" width="214" height="142" rx="16" fill="#e8f4eb"/><g fill="#75b9a0" stroke="#28784b" stroke-width="3"><rect x="65" y="55" width="92" height="30" rx="15" transform="rotate(-18 111 70)"/><rect x="105" y="103" width="72" height="25" rx="13" transform="rotate(18 141 115)"/></g><text x="125" y="178" text-anchor="middle" font-size="16" fill="#19452e">Bakterien</text><rect x="253" y="18" width="214" height="142" rx="16" fill="#f4edf8"/><g fill="none" stroke="#8b6aa8" stroke-width="7" stroke-linecap="round"><path d="M355 133V80l-28-30m28 30l28-30m-28 30l-33 10m33-10l35 11m-63-41l-15-8m71 8l14-9"/></g><g fill="#a98bc0"><circle cx="327" cy="50" r="7"/><circle cx="383" cy="50" r="7"/><circle cx="322" cy="90" r="7"/><circle cx="390" cy="91" r="7"/></g><text x="360" y="178" text-anchor="middle" font-size="16" fill="#19452e">Schimmelpilze</text><rect x="488" y="18" width="214" height="142" rx="16" fill="#fff2dc"/><g fill="#e8c16d" stroke="#9b7426" stroke-width="3"><ellipse cx="558" cy="77" rx="26" ry="34"/><ellipse cx="620" cy="108" rx="25" ry="32"/><ellipse cx="655" cy="55" rx="19" ry="25"/></g><text x="595" y="178" text-anchor="middle" font-size="16" fill="#19452e">Hefen</text></svg><p class="visual-caption">Vereinfachte schematische Darstellungen, nicht maßstabsgetreu</p></div>`,
+  info:`<h3>Wissenskarte: Drei Gruppen von Mikroorganismen</h3>
+<p>Mikroorganismen sind so klein, dass man sie meistens nur mit einem Mikroskop erkennen kann. Sie kommen fast überall vor, zum Beispiel im Boden, in der Luft, im Wasser und auf Oberflächen. Einige gelangen beim Anbau, bei der Verarbeitung oder bei der Lagerung auf Lebensmittel.</p>
+<p><strong>Bakterien:</strong> Bakterien sind einzellige Lebewesen ohne Zellkern. Sie vermehren sich häufig durch Zellteilung: Aus einer Zelle entstehen zwei Tochterzellen. Unter günstigen Bedingungen kann das sehr schnell gehen. Einige Bakterien verderben Lebensmittel oder verursachen Krankheiten. Andere sind nützlich. Milchsäurebakterien werden zum Beispiel zur Herstellung von Joghurt und Käse verwendet.</p>
+<p><strong>Schimmelpilze:</strong> Schimmelpilze sind Pilze. Sie wachsen häufig als feine Fäden, die sich zu einem Geflecht verbinden. Auf Lebensmitteln sieht man dieses Geflecht oft als pelzigen oder fleckigen Belag. Manche Arten können Mykotoxine bilden. Das sind giftige Stoffwechselprodukte. Nicht jeder Schimmel bildet solche Gifte.</p>
+<p><strong>Hefen:</strong> Hefen gehören zu den Pilzen und bestehen meist aus einer einzelnen Zelle. Sie können Zucker als Energiequelle nutzen. Bei der alkoholischen Gärung entstehen Alkohol und Kohlenstoffdioxid. Die Gasbildung lässt zum Beispiel Teig aufgehen. Bei Fruchtsäften kann sie dazu führen, dass der Saft gärt.</p>
+<p><strong>Wichtig:</strong> Mikroorganismen sind nicht grundsätzlich schädlich. Viele spielen eine wichtige Rolle bei der Herstellung von Lebensmitteln. Ob sie nützlich oder unerwünscht sind, hängt von der Art des Mikroorganismus und vom Lebensmittel ab.</p>`,
+ links:[],
+ task:`<p><strong>Ermittlungsauftrag:</strong> Ordnet die Hinweise der passenden Gruppe zu.</p>
+ <label>1. Auf Brot entsteht ein pelziger Belag.</label>
+ <select id="s2a"><option value="">Auswählen</option><option value="b">Bakterien</option><option value="m">Schimmelpilze</option><option value="h">Hefen</option></select>
+ <label>2. Fruchtsaft beginnt zu gären und bildet Gas.</label>
+ <select id="s2b"><option value="">Auswählen</option><option value="b">Bakterien</option><option value="m">Schimmelpilze</option><option value="h">Hefen</option></select>
+ <label>3. Sie werden zur Herstellung von Joghurt eingesetzt.</label>
+ <select id="s2c"><option value="">Auswählen</option><option value="b">Bakterien</option><option value="m">Schimmelpilze</option><option value="h">Hefen</option></select>
+ <button onclick="checkStation(1)">Mikroorganismen bestimmen</button>`,
+ check:()=>v("s2a")==="m"&&v("s2b")==="h"&&v("s2c")==="b"
+},
+
+{
+ title:"Die Bedingungen im Lager",
+ subtitle:"Wie lagert man Lebensmittel richtig?",
+ story:"Die digitale Lagerdokumentation ist ausgefallen. Die Küchencrew muss entscheiden, wie vier Lebensmittel gelagert werden sollen, damit sie möglichst lange haltbar bleiben.",
+ visual:`<div class="station-visual"><svg viewBox="0 0 720 190" role="img" aria-label="Brot, Hackfleisch, Kartoffeln und Nüsse"><rect x="18" y="18" width="160" height="142" rx="16" fill="#f7efe2"/><path d="M53 94q12-48 45-48t45 48v22H53z" fill="#d9a66c" stroke="#9b6b3e" stroke-width="3"/><text x="98" y="146" text-anchor="middle" font-size="15" fill="#19452e">Brot</text><rect x="194" y="18" width="160" height="142" rx="16" fill="#e8f1f7"/><path d="M236 55h76v62h-76z" fill="#d68c8c" stroke="#8f4545" stroke-width="3"/><text x="274" y="146" text-anchor="middle" font-size="15" fill="#19452e">Hackfleisch</text><rect x="370" y="18" width="160" height="142" rx="16" fill="#e8f4eb"/><g fill="#c69b59" stroke="#916a32" stroke-width="2"><ellipse cx="420" cy="82" rx="20" ry="30"/><ellipse cx="458" cy="94" rx="21" ry="29"/><ellipse cx="484" cy="66" rx="17" ry="25"/></g><text x="450" y="146" text-anchor="middle" font-size="15" fill="#19452e">Kartoffeln</text><rect x="546" y="18" width="156" height="142" rx="16" fill="#fff2dc"/><g fill="#9c7444" stroke="#704d2d" stroke-width="2"><path d="M588 59q-19 12-7 36 14 17 27-1 8-23-20-35z"/><path d="M631 79q-16 10-7 29 13 15 25-1 7-19-18-28z"/></g><text x="624" y="146" text-anchor="middle" font-size="15" fill="#19452e">Nüsse</text></svg><p class="visual-caption">Unterschiedliche Lebensmittel benötigen unterschiedliche Lagerbedingungen</p></div>`,
+  info:`<h3>Wissenskarte: Warum ist die richtige Lagerung wichtig?</h3>
+<p>Temperatur, Feuchtigkeit, Licht und Sauerstoff beeinflussen, wie lange Lebensmittel haltbar bleiben. Kühle Temperaturen verlangsamen das Wachstum vieler Mikroorganismen und manche chemischen Reaktionen. Trockenheit hemmt das Wachstum vieler Schimmelpilze und Bakterien. Licht und Sauerstoff können bestimmte Inhaltsstoffe verändern.</p>
+<p><strong>Brot:</strong> Brot bleibt in einem trockenen, sauberen Brotkasten bei Raumtemperatur meist länger frisch. Im Kühlschrank wird es schneller altbacken, weil sich die Stärke verändert. Für eine längere Aufbewahrung eignet sich das Einfrieren.</p>
+<p><strong>Hackfleisch:</strong> Hackfleisch ist besonders empfindlich. Beim Zerkleinern wird die Oberfläche vergrößert und Keime können im ganzen Produkt verteilt werden. Frisches Hackfleisch muss sehr kalt gelagert und entsprechend den Angaben auf der Verpackung schnell verbraucht werden. Das Verbrauchsdatum ist unbedingt zu beachten. Hackfleisch sollte gut durchgegart werden.</p>
+<p><strong>Kartoffeln:</strong> Kartoffeln sollten kühl, trocken, dunkel und luftig gelagert werden. Licht kann dazu führen, dass sie grün werden und mehr Glykoalkaloide wie Solanin enthalten. Auch Keime und grüne Stellen können erhöhte Mengen dieser Stoffe enthalten. Grüne Stellen und Keime sollten großzügig entfernt werden. Stark grüne oder bitter schmeckende Kartoffeln sollte man nicht essen.</p>
+<p><strong>Nüsse:</strong> Nüsse enthalten viele Fette. Wenn diese Fette mit Sauerstoff reagieren, können sie ranzig werden. Geschälte und zerkleinerte Nüsse sollten deshalb gut verschlossen, kühl und trocken gelagert werden. Der Kühlschrank kann die Haltbarkeit verlängern.</p>
+<p><strong>Recherche:</strong> Vergleicht eure Antworten zusätzlich mit den Empfehlungen des Bundeszentrums für Ernährung.</p>
+<p><a href="https://www.bzfe.de/kueche-und-alltag/kochen/lebensmittel-richtig-lagern" target="_blank" rel="noopener">BZfE: Lebensmittel richtig lagern ↗</a></p>`,
+ links:[],
+ task:`<p><strong>Ermittlungsauftrag:</strong> Lest die Lagerhinweise auf der verlinkten Webseite. Wählt für jedes Lebensmittel die passende Lagerung aus.</p>
+ <label>1. Wie sollte frisches Brot normalerweise aufbewahrt werden?</label>
+ <select id="s3a"><option value="">Antwort auswählen</option><option value="a">In einem trockenen Brotkasten bei Raumtemperatur.</option><option value="b">In einem offenen Plastikbeutel im Kühlschrank.</option><option value="c">In einer feuchten Schüssel bei warmer Raumtemperatur.</option></select>
+ <label>2. Warum muss Hackfleisch besonders vorsichtig gelagert werden?</label>
+ <select id="s3b"><option value="">Antwort auswählen</option><option value="a">Weil durch das Zerkleinern alle Bakterien abgetötet werden.</option><option value="b">Weil sich auf dem zerkleinerten Fleisch Keime schnell vermehren können.</option><option value="c">Weil Hackfleisch bei Kühlschranktemperaturen sofort gefriert.</option></select>
+ <label>3. Welche Lagerung ist für Kartoffeln geeignet?</label>
+ <select id="s3c"><option value="">Antwort auswählen</option><option value="a">Warm, hell und in einem geschlossenen Plastikbeutel.</option><option value="b">Feucht und gemeinsam mit Zwiebeln.</option><option value="c">Kühl, trocken und dunkel, möglichst in einem luftdurchlässigen Sack.</option></select>
+ <label>4. Wie sollten geöffnete Packungen geschälter und zerkleinerter Nüsse gelagert werden?</label>
+ <select id="s3d"><option value="">Antwort auswählen</option><option value="a">Luftdicht verschlossen, möglichst im Kühlschrank.</option><option value="b">Offen und ungeschützt neben dem Herd.</option><option value="c">In Wasser eingelegt bei Raumtemperatur.</option></select>
+ <button onclick="checkStation(2)">Lagerbedingungen überprüfen</button>`,
+ check:()=>v("s3a")==="a"&&v("s3b")==="b"&&v("s3c")==="c"&&v("s3d")==="a"
+},
+
+{
+ title:"Zwei Fälle, zwei Ursachen",
+ subtitle:"Biologischer Verderb oder chemische Veränderung?",
+ story:"Die Küchenleitung hat vier Beobachtungen in der falschen Akte abgelegt. Alle Lebensmittel haben sich verändert. Die Ursache ist aber nicht immer dieselbe.",
+ visual:`<div class="station-visual"><svg viewBox="0 0 720 190" role="img" aria-label="Vergleich von biologischem Verderb und chemischer Veränderung"><rect x="20" y="18" width="320" height="142" rx="16" fill="#e8f4eb"/><text x="180" y="46" text-anchor="middle" font-size="18" font-weight="bold" fill="#19452e">Biologischer Verderb</text><path d="M108 113q12-45 48-45t48 45v18H108z" fill="#d9a66c" stroke="#9b6b3e" stroke-width="3"/><g fill="#397b4d"><circle cx="135" cy="87" r="8"/><circle cx="157" cy="78" r="7"/><circle cx="180" cy="93" r="9"/></g><text x="180" y="151" text-anchor="middle" font-size="13" fill="#19452e">Mikroorganismen wirken mit</text><rect x="380" y="18" width="320" height="142" rx="16" fill="#fff2dc"/><text x="540" y="46" text-anchor="middle" font-size="18" font-weight="bold" fill="#19452e">Chemische Veränderung</text><path d="M493 76q-25 30 0 59 30 14 58-7 17-25-4-52-27-18-54 0z" fill="#d94f36" stroke="#a63828" stroke-width="3"/><path d="M520 73q12-18 27-12" fill="none" stroke="#397b4d" stroke-width="6" stroke-linecap="round"/><text x="540" y="151" text-anchor="middle" font-size="13" fill="#19452e">Stoffe reagieren miteinander</text></svg><p class="visual-caption">Entscheidend ist die Ursache der Veränderung</p></div>`,
+  info:`<h3>Wissenskarte: Zwei unterschiedliche Vorgänge</h3>
+<p>Lebensmittel können sich auf unterschiedliche Weise verändern. Für diese Station unterscheiden wir danach, wodurch die Veränderung hauptsächlich ausgelöst wird. Wichtig ist: Auch beim biologischen Verderb laufen chemische Reaktionen ab. Mikroorganismen verändern Lebensmittel nämlich durch ihren Stoffwechsel.</p>
+<p><strong>Biologischer Verderb:</strong> Bakterien, Hefen oder Schimmelpilze wachsen auf oder in einem Lebensmittel. Sie nehmen Nährstoffe auf und bauen Bestandteile um oder ab. Dabei können neue Stoffe entstehen, die Geruch, Geschmack, Farbe oder Beschaffenheit verändern. Manche Mikroorganismen können außerdem Krankheitserreger oder giftige Stoffe bilden.</p>
+<p><strong>Chemische Veränderung ohne mikrobielles Wachstum:</strong> Stoffe im Lebensmittel reagieren miteinander oder mit Stoffen aus der Umgebung. Ein Beispiel ist die enzymatische Bräunung eines angeschnittenen Apfels. Auch das Ranzigwerden von Öl kann durch Reaktionen von Fetten mit Sauerstoff entstehen. Diese Form nennt man oxidative Ranzigkeit.</p>
+<p><strong>Was ist ein Enzym?</strong> Enzyme sind meist Eiweiße, die bestimmte chemische Reaktionen beschleunigen. Sie wirken als Biokatalysatoren und werden bei der Reaktion nicht dauerhaft verbraucht. Bei der Apfelbräunung unterstützt ein Enzym die Reaktion bestimmter Pflanzenstoffe mit Sauerstoff.</p>
+<p><strong>Merke:</strong> Nicht jede chemische Veränderung ist biologischer Verderb. Umgekehrt beruhen viele Veränderungen beim biologischen Verderb auf chemischen Reaktionen, die von Mikroorganismen ausgelöst werden.</p>`,
+ links:[],
+ task:`<p><strong>Ermittlungsauftrag:</strong> Entscheidet bei jedem Fall, welche Ursache am besten passt.</p>
+ <label>1. Auf Brot wächst ein Schimmelbelag.</label>
+ <select id="s4a"><option value="">Auswählen</option><option value="bio">Biologischer Verderb</option><option value="chem">Chemische Veränderung</option></select>
+ <label>2. Ein Apfel wird an der Schnittfläche braun.</label>
+ <select id="s4b"><option value="">Auswählen</option><option value="bio">Biologischer Verderb</option><option value="chem">Chemische Veränderung</option></select>
+ <label>3. Ein Fruchtsaft beginnt durch Hefen zu gären.</label>
+ <select id="s4c"><option value="">Auswählen</option><option value="bio">Biologischer Verderb</option><option value="chem">Chemische Veränderung</option></select>
+ <label>4. Öl riecht ranzig, weil Inhaltsstoffe mit Sauerstoff reagieren.</label>
+ <select id="s4d"><option value="">Auswählen</option><option value="bio">Biologischer Verderb</option><option value="chem">Chemische Veränderung</option></select>
+ <button onclick="checkStation(3)">Beweisakte auswerten</button>`,
+ check:()=>v("s4a")==="bio"&&v("s4b")==="chem"&&v("s4c")==="bio"&&v("s4d")==="chem"
+},
+
+{
+ title:"Das Rätsel um den braunen Apfel",
+ subtitle:"Wie läuft die enzymatische Bräunung ab?",
+ story:"Für den Nachtisch wurden Äpfel geschnitten. Nach kurzer Zeit sind die Schnittflächen braun. Die Küchencrew befürchtet, dass das Obst verdorben ist. Eure Aufgabe ist es, den Vorgang in die richtige Reihenfolge zu bringen.",
+ visual:`<div class="station-visual"><svg viewBox="0 0 720 190" role="img" aria-label="Vier Schritte der enzymatischen Bräunung eines Apfels"><g><circle cx="90" cy="82" r="43" fill="#d94f36" stroke="#a63828" stroke-width="3"/><path d="M89 39q0-16 13-22" stroke="#397b4d" stroke-width="7" fill="none" stroke-linecap="round"/><text x="90" y="151" text-anchor="middle" font-size="14" fill="#19452e">Frischer Apfel</text></g><path d="M154 82h35m-10-10 10 10-10 10" stroke="#28784b" stroke-width="3" fill="none"/><g><circle cx="270" cy="82" r="43" fill="#d94f36" stroke="#a63828" stroke-width="3"/><path d="M270 39q0-16 13-22" stroke="#397b4d" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M303 60q-16 20-11 44" stroke="#fff4dc" stroke-width="8"/><text x="270" y="151" text-anchor="middle" font-size="14" fill="#19452e">Angeschnitten</text></g><path d="M334 82h35m-10-10 10 10-10 10" stroke="#28784b" stroke-width="3" fill="none"/><g><circle cx="450" cy="82" r="43" fill="#d94f36" stroke="#a63828" stroke-width="3"/><path d="M483 60q-16 20-11 44" stroke="#9b5a2e" stroke-width="12"/><text x="450" y="151" text-anchor="middle" font-size="14" fill="#19452e">Oxidation</text></g><path d="M514 82h35m-10-10 10 10-10 10" stroke="#28784b" stroke-width="3" fill="none"/><g><circle cx="630" cy="82" r="43" fill="#b86a35" stroke="#85431f" stroke-width="3"/><path d="M630 39q0-16 13-22" stroke="#397b4d" stroke-width="7" fill="none" stroke-linecap="round"/><text x="630" y="151" text-anchor="middle" font-size="14" fill="#19452e">Braune Fläche</text></g></svg><p class="visual-caption">Vereinfachte Darstellung des Vorgangs</p></div>`,
+  info:`<h3>Wissenskarte: Warum wird ein Apfel braun?</h3>
+<p>Im unversehrten Apfel sind bestimmte Pflanzenstoffe und Enzyme in den Zellen räumlich weitgehend voneinander getrennt. Beim Schneiden werden Zellen verletzt. Dadurch können die Stoffe miteinander und mit Sauerstoff aus der Luft in Kontakt kommen.</p>
+<p>Ein wichtiges Enzym heißt <strong>Polyphenoloxidase</strong>. Es beschleunigt die Reaktion bestimmter Pflanzenstoffe, der sogenannten Polyphenole, mit Sauerstoff. Dabei entstehen zunächst weitere Reaktionsprodukte. Diese können sich anschließend zu braunen Farbstoffen verbinden. Der Vorgang heißt <strong>enzymatische Bräunung</strong>. Die Reaktion mit Sauerstoff wird als <strong>Oxidation</strong> bezeichnet.</p>
+<p>Die braune Farbe bedeutet nicht automatisch, dass der Apfel verdorben oder gesundheitsschädlich ist. Es handelt sich zunächst um eine chemische Veränderung und nicht um Schimmel. Der Apfel kann trotzdem unabhängig davon verderben, wenn sich zum Beispiel Mikroorganismen vermehren.</p>
+<p><strong>Wie lässt sich die Bräunung verlangsamen?</strong> Zitronensaft kann helfen, weil seine Säure die Aktivität des Enzyms hemmt. Auch Kühlen verlangsamt die Reaktion. Wenn möglichst wenig Sauerstoff an die Schnittfläche gelangt, läuft die Bräunung ebenfalls langsamer ab.</p>`,
+ links:[],
+ task:`<p><strong>Ermittlungsauftrag:</strong> Bringt die Schritte in die richtige Reihenfolge. Nutzt die Pfeile, um die Karten zu verschieben.</p>
+ <div id="orderList">
+   <div class="order-item" data-step="3">Es entstehen braune Farbstoffe. <span><button class="secondary" onclick="moveItem(this,-1)">↑</button><button class="secondary" onclick="moveItem(this,1)">↓</button></span></div>
+   <div class="order-item" data-step="1">Der Apfel wird aufgeschnitten und Zellen werden verletzt. <span><button class="secondary" onclick="moveItem(this,-1)">↑</button><button class="secondary" onclick="moveItem(this,1)">↓</button></span></div>
+   <div class="order-item" data-step="2">Inhaltsstoffe kommen mit Enzymen und Sauerstoff in Kontakt. <span><button class="secondary" onclick="moveItem(this,-1)">↑</button><button class="secondary" onclick="moveItem(this,1)">↓</button></span></div>
+   <div class="order-item" data-step="4">Die Schnittfläche verfärbt sich braun. <span><button class="secondary" onclick="moveItem(this,-1)">↑</button><button class="secondary" onclick="moveItem(this,1)">↓</button></span></div>
+ </div>
+ <button onclick="checkStation(4)">Reihenfolge überprüfen</button>`,
+ check:()=>Array.from(document.querySelectorAll("#orderList .order-item")).map(x=>x.dataset.step).join(",")==="1,2,3,4"
+},
+
+{
+ title:"Lebensmittelvergiftung",
+ subtitle:"Welche Krankheitserreger können über Lebensmittel übertragen werden?",
+ story:"Nach dem Mittagessen melden mehrere Personen Übelkeit und Bauchschmerzen. Die Schulküche muss herausfinden, welche Krankheitserreger über Lebensmittel übertragen werden können und wie man sich schützt. Seht euch zuerst das Video an und nutzt anschließend die Informationsseiten.",
+ visual:`<div class="station-visual"><svg viewBox="0 0 720 190" role="img" aria-label="Schematische Darstellung der Bakterien Salmonellen, Listerien und Clostridium botulinum"><rect x="18" y="18" width="214" height="142" rx="16" fill="#e8f4eb"/><g fill="#e5a45c" stroke="#9b6428" stroke-width="3"><rect x="65" y="63" width="96" height="27" rx="14" transform="rotate(-20 113 76)"/><rect x="95" y="105" width="80" height="24" rx="12" transform="rotate(15 135 117)"/></g><text x="125" y="178" text-anchor="middle" font-size="15" fill="#19452e">Salmonellen</text><rect x="253" y="18" width="214" height="142" rx="16" fill="#e8f1f7"/><g fill="#75b9a0" stroke="#28784b" stroke-width="3"><rect x="302" y="62" width="100" height="26" rx="13" transform="rotate(15 352 75)"/><rect x="325" y="105" width="83" height="23" rx="12" transform="rotate(-12 366 116)"/></g><text x="360" y="178" text-anchor="middle" font-size="15" fill="#19452e">Listerien</text><rect x="488" y="18" width="214" height="142" rx="16" fill="#f4edf8"/><g fill="#a98bc0" stroke="#75558e" stroke-width="3"><rect x="536" y="66" width="110" height="30" rx="15"/><rect x="555" y="108" width="82" height="22" rx="11"/></g><text x="595" y="178" text-anchor="middle" font-size="15" fill="#19452e">C. botulinum</text></svg><p class="visual-caption">Schematische Illustrationen, nicht maßstabsgetreu</p></div>`,
+  info:`<h3>Teil 1: Schaut euch das Video an</h3>
+  <p>Im Video werden typische Beschwerden einer Lebensmittelvergiftung und verschiedene mögliche Auslöser genannt. Achtet besonders auf Übelkeit, Erbrechen, Durchfall und Bauchkrämpfe sowie auf die Namen der Erreger.</p>
+  <div style="position:relative;width:100%;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px;margin:14px 0;">
+    <iframe src="https://www.youtube.com/embed/Ni63plhf-m8?mute=1&cc_load_policy=1&cc_lang_pref=de&playsinline=1&rel=0" title="Lebensmittelvergiftung: Trivial genial" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  </div>
+  <p><a href="https://www.youtube.com/watch?v=Ni63plhf-m8&cc_load_policy=1&cc_lang_pref=de" target="_blank" rel="noopener">Video in YouTube öffnen, falls es hier nicht angezeigt wird ↗</a></p>
+  <h3>Teil 2: Informiert euch über die drei Bakterien</h3>
+  <p><strong>Salmonellen:</strong> Salmonellen sind Bakterien, die eine Darminfektion auslösen können. Sie werden häufig über rohe oder nicht ausreichend erhitzte Lebensmittel übertragen, zum Beispiel über Geflügel, Fleisch und rohe Eier. Auch andere Lebensmittel können verunreinigt sein. Typische Beschwerden sind Durchfall, Bauchschmerzen, Fieber, Übelkeit und manchmal Erbrechen. Gründliches Erhitzen und gute Küchenhygiene helfen, eine Infektion zu verhindern.</p>
+  <p><strong>Listerien:</strong> Listerien kommen in der Umwelt vor und können verschiedene Lebensmittel verunreinigen. Eine Besonderheit ist, dass sie sich auch bei Kühlschranktemperaturen vermehren können. Bei Kälte wachsen sie langsamer, verschwinden aber nicht automatisch. Ein Lebensmittel muss weder auffällig riechen noch sichtbar verdorben sein. Besonders gefährdet sind Schwangere, ältere Menschen und Personen mit geschwächtem Immunsystem. Bei Schwangeren kann eine Infektion auch das ungeborene Kind gefährden.</p>
+  <p><strong>Clostridium botulinum:</strong> Dieses Bakterium kann widerstandsfähige Dauerformen bilden, die man <strong>Sporen</strong> nennt. Unter geeigneten Bedingungen, besonders ohne Sauerstoff, können daraus wieder Bakterien wachsen und ein starkes Nervengift bilden. Das Gift heißt <strong>Botulinumtoxin</strong> und kann <strong>Botulismus</strong> auslösen. Das Nervengift stört die Signalübertragung vom Nerv zum Muskel. Dadurch können Muskeln gelähmt werden. In schweren Fällen ist auch die Atemmuskulatur betroffen. Ein mögliches Risiko sind unsachgemäß hergestellte Konserven, besonders selbst eingekochte Lebensmittel, die nicht ausreichend erhitzt wurden.</p>
+  <p><strong>Wichtig:</strong> Bei Salmonellen und Listerien entsteht die Erkrankung typischerweise durch die Aufnahme lebender Bakterien, die sich im Körper vermehren können. Bei der häufigsten Form des lebensmittelbedingten Botulismus wird dagegen ein Gift aufgenommen, das bereits im Lebensmittel gebildet wurde. Das nennt man eine Lebensmittelintoxikation.</p>
+  <div class="info"><h3>Fun Fact: Botox und Botulismus</h3>
+  <p>Botox ist ein Markenname für ein medizinisches Präparat, das Botulinumtoxin enthält, meist Typ A. Auch Botulismus wird durch Botulinumtoxine verursacht. In der Medizin werden genau dosierte Präparate gezielt eingesetzt, um bestimmte Muskeln vorübergehend zu entspannen. Die Anwendung erfolgt durch geschultes Fachpersonal. Das Nervengift ist gefährlich, wenn es unkontrolliert in den Körper gelangt oder falsch angewendet wird.</p></div>
+  <p><strong>Wie wird Botulismus behandelt?</strong> Botulismus ist ein medizinischer Notfall. Betroffene müssen sofort im Krankenhaus behandelt werden. Ein Antitoxin kann möglichst früh verabreicht werden. Es kann noch nicht an Nervenzellen gebundenes Gift neutralisieren, bereits eingetretene Lähmungen aber nicht unmittelbar rückgängig machen. Bei schweren Verläufen kann eine intensivmedizinische Behandlung und künstliche Beatmung notwendig sein.</p>
+  <p><strong>So schützt ihr euch:</strong> Hände, Arbeitsflächen und Küchenutensilien sauber halten. Rohe Lebensmittel getrennt von verzehrfertigen Speisen verarbeiten. Fleisch und Geflügel ausreichend durchgaren. Kühlpflichtige Lebensmittel rasch in den Kühlschrank stellen und die Lagerhinweise beachten. Aufgeblähte, undichte oder verdächtige Konserven niemals probieren.</p>`,
+ links:[
+  ["BfR: Salmonellen","https://www.bfr.bund.de/fragen-und-antworten/thema/fragen-und-antworten-zum-schutz-vor-infektionen-mit-salmonellen/"],
+  ["BfR: Listerien","https://www.bfr.bund.de/lebensmittel-und-futtermittelsicherheit/bewertung-mikrobieller-risiken-von-lebensmitteln/gesundheitliche-bewertung-von-bakterien/listerien/"],
+  ["BfR: Botulismus durch Clostridium botulinum","https://www.bfr.bund.de/fragen-und-antworten/thema/selten-aber-vermeidbar-fragen-und-antworten-zum-botulismus/"]
+ ],
+ task:`<p><strong>Ermittlungsauftrag:</strong> Schaut das Video und lest die Informationen zu den drei Bakterien. Wählt anschließend jeweils die richtige Antwort aus.</p>
+ <label>1. Welche Beschwerden können laut Video bei einer Lebensmittelvergiftung auftreten?</label>
+ <select id="s6a"><option value="">Antwort auswählen</option><option value="a">Übelkeit, Erbrechen, Durchfall und Bauchkrämpfe.</option><option value="b">Ausschließlich Hautausschlag und Gelenkschmerzen.</option><option value="c">Immer nur Kopfschmerzen ohne weitere Beschwerden.</option></select>
+ <label>2. Über welche Lebensmittel können Salmonellen häufig übertragen werden?</label>
+ <select id="s6b"><option value="">Antwort auswählen</option><option value="a">Ausschließlich über verschimmeltes Brot und trockene Nudeln.</option><option value="b">Über rohes oder nicht ausreichend erhitztes Fleisch, Geflügel und rohe Eier.</option><option value="c">Nur über pasteurisierte Milchprodukte.</option></select>
+ <label>3. Was ist an Listerien besonders tückisch?</label>
+ <select id="s6c"><option value="">Antwort auswählen</option><option value="a">Sie wachsen ausschließlich bei großer Hitze.</option><option value="b">Sie sind immer an einem auffälligen Geruch zu erkennen.</option><option value="c">Sie können sich auch bei Kühlschranktemperaturen vermehren.</option></select>
+ <label>4. Was kann Clostridium botulinum unter bestimmten Bedingungen bilden?</label>
+ <select id="s6d"><option value="">Antwort auswählen</option><option value="a">Ein starkes Nervengift, das Botulismus auslösen kann.</option><option value="b">Einen harmlosen Farbstoff, der Lebensmittel grün färbt.</option><option value="c">Ausschließlich Milchsäure, die Lebensmittel sauer macht.</option></select>
+ <label>5. Was unterscheidet Botulismus typischerweise von einer Infektion mit Salmonellen oder Listerien?</label>
+ <select id="s6e"><option value="">Antwort auswählen</option><option value="a">Botulismus entsteht nur durch das Einatmen von Schimmelsporen.</option><option value="b">Bei Botulismus wird meist ein bereits im Lebensmittel gebildetes Gift aufgenommen.</option><option value="c">Botulismus wird ausschließlich durch verdorbene Milch ausgelöst.</option></select>
+ <button onclick="checkStation(5)">Lebensmittelvergiftung untersuchen</button>`,
+ check:()=>v("s6a")==="a"&&v("s6b")==="b"&&v("s6c")==="c"&&v("s6d")==="a"&&v("s6e")==="b"
+}
+
+];
+
+let teamName="";
+let startTime=0;
+let timerInterval=null;
+let current=0;
+
+function v(id) {
+  return document.getElementById(id)?.value || "";
+}
+
+function showTeam() {
+  document.getElementById("teamSetup").classList.remove("hidden");
+  document.getElementById("teacherLogin").classList.add("hidden");
+}
+
+function showTeacherLogin() {
+  document.getElementById("teacherLogin").classList.remove("hidden");
+  document.getElementById("teamSetup").classList.add("hidden");
+}
+
+function startGame() {
+  teamName=v("teamName").trim();
+  if(!teamName) {
+    feedback("startError","Bitte gebt euren Teamnamen ein.","no");
+    return;
+  }
+  startTime=Date.now();
+  current=0;
+  document.getElementById("start").classList.add("hidden");
+  document.getElementById("game").classList.remove("hidden");
+  document.getElementById("teamDisplay").textContent="Team: "+teamName;
+  renderStation();
+  timerInterval=setInterval(updateTimer,1000);
+}
+
+function updateTimer() {
+  let seconds=Math.floor((Date.now()-startTime)/1000);
+  document.getElementById("timer").textContent=formatTime(seconds);
+}
+
+function formatTime(seconds) {
+  let h=Math.floor(seconds/3600);
+  let m=Math.floor((seconds%3600)/60);
+  let s=seconds%60;
+  return (h?String(h).padStart(2,"0")+":":"")+String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+
+function renderStation() {
+  const st=stations[current];
+  document.getElementById("stationDisplay").textContent="Ermittlungsakte "+(current+1)+" von 6";
+  document.getElementById("progress").style.width=(current/6*100)+"%";
+
+  document.getElementById("stationContent").innerHTML=`
+  <article class="card">
+    <span class="station-number">Ermittlungsakte ${current+1}</span>
+    <h2>${st.title}</h2>
+    <p><strong>${st.subtitle}</strong></p>
+    <div class="story">${st.story}</div>
+    ${st.visual || ""}
+    <div class="info">${st.info}</div>
+    ${st.links.length ? `<h3>Weiterlernen</h3>${st.links.map(l=>`<a class="resource" href="${l[1]}" target="_blank" rel="noopener">${l[0]} ↗</a>`).join("")}` : ""}
+    <div class="info">
+      <h3>🔎 Euer Ermittlungsauftrag</h3>
+      ${st.task}
+      <div id="fb${current}" class="feedback"></div>
+    </div>
+    <button id="nextBtn" class="hidden" onclick="nextStation()">
+      ${current===5?"Zur Auflösung":"Nächste Ermittlungsakte"} →
+    </button>
+  </article>`;
+}
+
+function feedback(id,message,type) {
+  const el=document.getElementById(id);
+  el.textContent=message;
+  el.className="feedback "+type;
+}
+
+function checkStation(i) {
+  if(i!==current) return;
+  if(stations[i].check()) {
+    document.getElementById("nextBtn").classList.remove("hidden");
+    document.getElementById("progress").style.width=((current+1)/6*100)+"%";
+    feedback("fb"+i,"Richtig! Ihr habt diese Ermittlungsakte erfolgreich gelöst.","ok");
+  } else {
+    feedback("fb"+i,"Noch nicht ganz. Prüft eure Antworten und Hinweise noch einmal.","no");
+  }
+}
+
+function nextStation() {
+  current++;
+  if(current<6) {
+    renderStation();
+  } else {
+    document.getElementById("game").classList.add("hidden");
+    document.getElementById("final").classList.remove("hidden");
+  }
+}
+
+function moveItem(button,direction) {
+  const item=button.closest(".order-item");
+  const parent=item.parentElement;
+  const siblings=Array.from(parent.children);
+  const index=siblings.indexOf(item);
+  const target=index+direction;
+  if(target<0||target>=siblings.length) return;
+  if(direction<0) parent.insertBefore(item,siblings[target]);
+  else parent.insertBefore(siblings[target],item);
+}
+
+function finishGame() {
+    const seconds=Math.floor((Date.now()-startTime)/1000);
+    const date=new Date().toLocaleString("de-DE");
+    clearInterval(timerInterval);
+
+    const record={
+      team:teamName,
+      date:date,
+      seconds:seconds
+    };
+
+    const records=JSON.parse(localStorage.getItem("lebensmittelRecords")||"[]");
+    records.push(record);
+    localStorage.setItem("lebensmittelRecords",JSON.stringify(records));
+
+    document.getElementById("final").classList.add("hidden");
+    document.getElementById("success").classList.remove("hidden");
+    document.getElementById("doneTeam").textContent=teamName;
+    document.getElementById("doneDate").textContent=date;
+    document.getElementById("doneTime").textContent=formatTime(seconds);
+}
+
+function teacherLogin() {
+  if(v("teacherPassword")==="5208") {
+    document.getElementById("start").classList.add("hidden");
+    document.getElementById("teacherArea").classList.remove("hidden");
+    renderRecords();
+  } else {
+    feedback("loginError","Das Passwort stimmt nicht.","no");
+  }
+}
+
+function logout() {
+  document.getElementById("teacherArea").classList.add("hidden");
+  document.getElementById("start").classList.remove("hidden");
+  document.getElementById("teacherPassword").value="";
+}
+
+function renderRecords() {
+  const records=JSON.parse(localStorage.getItem("lebensmittelRecords")||"[]");
+  const area=document.getElementById("records");
+
+  if(records.length===0) {
+    area.innerHTML="<p>Noch keine Durchläufe gespeichert.</p>";
+    return;
+  }
+
+  area.innerHTML=`
+  <table>
+    <thead><tr><th>Teamname</th><th>Datum</th><th>Dauer</th></tr></thead>
+    <tbody>
+    ${records.map(r=>`
+      <tr>
+        <td>${escapeHTML(r.team)}</td>
+        <td>${escapeHTML(r.date)}</td>
+        <td>${formatTime(r.seconds)}</td>
+      </tr>`).join("")}
+    </tbody>
+  </table>`;
+}
+
+function escapeHTML(text) {
+  return String(text).replace(/[&<>"']/g,char=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[char]);
+}
+
+function exportCSV() {
+  const records=JSON.parse(localStorage.getItem("lebensmittelRecords")||"[]");
+  const rows=[
+    ["Teamname","Datum","Dauer in Sekunden"],
+    ...records.map(r=>[r.team,r.date,r.seconds])
+  ];
+  const csv=rows.map(row=>row.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(";")).join("\n");
+  const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"});
+  const link=document.createElement("a");
+  link.href=URL.createObjectURL(blob);
+  link.download="lebensmittelrettung-durchlaeufe.csv";
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
+
+function deleteRecords() {
+  if(confirm("Möchtest du wirklich alle gespeicherten Durchläufe löschen?")) {
+    localStorage.removeItem("lebensmittelRecords");
+    renderRecords();
+  }
+}
+</script>
+</body>
+</html>
